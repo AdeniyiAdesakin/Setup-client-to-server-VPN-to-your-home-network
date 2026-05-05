@@ -7,7 +7,7 @@
 <P>1. From the server manager dashboard on Windows server 2019, click on Manage and on Add roles and Features</P>
 <p align="center"><img src="https://i.imgur.com/BFw3fUz.png" height="50%" width="50%"/>
 
-<p>2. On the before you begin screen, just click NEXT.</p>
+<p>2. On the before you begin screen, just click NEXT. </p>
 <p align="center"><img src="https://i.imgur.com/gaMZiFi.png" height="50%" width="50%"/>
 
 <p>3. On the Installation Type screen, make sure the Role-based or feature-based installation is selected, then click <b>NEXT.</b>.</p>
