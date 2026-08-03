@@ -76,7 +76,7 @@ In **Server Manager**, I opened **Manage > Add Roles and Features** and selected
 | Operating system | Windows Server 2019 Standard Evaluation |
 
 <p align="center">
-  <img src="https://i.imgur.com/Xq8ggfi.png" width="700" alt="Selecting ADDS-SERVER as the destination server">
+  <img src="https://i.imgur.com/LHiCv5x.png" width="700" alt="Selecting ADDS-SERVER as the destination server">
 </p>
 
 ### 2. Installed the Remote Access Role
@@ -84,17 +84,17 @@ In **Server Manager**, I opened **Manage > Add Roles and Features** and selected
 I selected the **Remote Access** server role and enabled the **DirectAccess and VPN (RAS)** role service. The wizard added the supporting Remote Access management tools.
 
 <p align="center">
-  <img src="https://i.imgur.com/U9DIq1A.png" width="700" alt="Selecting the Remote Access server role">
+  <img src="https://i.imgur.com/XpW7Mmd.png" width="700" alt="Selecting the Remote Access server role">
 </p>
 
 <p align="center">
-  <img src="https://i.imgur.com/pso68N7.png" width="700" alt="Selecting the DirectAccess and VPN RAS role service">
+  <img src="https://i.imgur.com/OY7171I.png" width="700" alt="Selecting the DirectAccess and VPN RAS role service">
 </p>
 
 The installation completed successfully on `ADDS-SERVER`.
 
 <p align="center">
-  <img src="https://i.imgur.com/cYaLX4w.png" width="700" alt="Remote Access role installation completed successfully">
+  <img src="https://i.imgur.com/35mQwTR.png" width="700" alt="Remote Access role installation completed successfully">
 </p>
 
 ### 3. Enabled Routing and Remote Access
@@ -104,17 +104,17 @@ I opened **Routing and Remote Access**, right-clicked the local server, and sele
 I chose **Custom configuration** so that only the required RRAS service could be enabled.
 
 <p align="center">
-  <img src="https://i.imgur.com/9TVhRtG.png" width="700" alt="Selecting a custom RRAS configuration">
+  <img src="https://i.imgur.com/fAC3ZX2.png" width="700" alt="Selecting a custom RRAS configuration">
 </p>
 
 I selected **VPN access**, completed the wizard, and started the Routing and Remote Access service.
 
 <p align="center">
-  <img src="https://i.imgur.com/eRvwsHc.png" width="700" alt="Enabling VPN access in the RRAS configuration wizard">
+  <img src="https://i.imgur.com/9f1DLVm.png" width="700" alt="Enabling VPN access in the RRAS configuration wizard">
 </p>
 
 <p align="center">
-  <img src="https://i.imgur.com/i86dJ1Q.png" width="700" alt="Starting the Routing and Remote Access service">
+  <img src="https://i.imgur.com/Gshob4N.png" width="700" alt="Starting the Routing and Remote Access service">
 </p>
 
 ### 4. Configured IPv4 Address Assignment
@@ -128,7 +128,7 @@ In the RRAS server properties, I opened the **IPv4** tab and configured:
 | Network adapter | Allow RAS to select an adapter |
 
 <p align="center">
-  <img src="https://i.imgur.com/ViMUYCt.png" width="700" alt="Configuring RRAS IPv4 forwarding and DHCP address assignment">
+  <img src="https://i.imgur.com/IOs6k8e.png" width="700" alt="Configuring RRAS IPv4 forwarding and DHCP address assignment">
 </p>
 
 This configuration instructs RRAS to obtain addresses for connected VPN clients through DHCP rather than from an RRAS static address pool.
@@ -138,7 +138,7 @@ This configuration instructs RRAS to obtain addresses for connected VPN clients 
 In **Active Directory Users and Computers**, I opened the selected lab user's properties. On the **Dial-in** tab, I set **Network Access Permission** to **Allow access**.
 
 <p align="center">
-  <img src="https://i.imgur.com/uSLkiXP.png" width="700" alt="Granting an Active Directory lab user dial-in permission">
+  <img src="https://i.imgur.com/QJHLbzH.png" width="700" alt="Granting an Active Directory lab user dial-in permission">
 </p>
 
 This per-user permission was suitable for a small lab. A larger environment should normally control VPN authorization through Network Policy Server policies and security-group membership.
@@ -148,7 +148,7 @@ This per-user permission was suitable for a small lab. A larger environment shou
 I verified that **Remote Access** appeared in the Windows Defender Firewall allowed-app list.
 
 <p align="center">
-  <img src="https://i.imgur.com/jKjHUjU.png" width="700" alt="Remote Access listed in Windows Defender Firewall allowed apps">
+  <img src="https://i.imgur.com/POsD7T6.png" width="700" alt="Remote Access listed in Windows Defender Firewall allowed apps">
 </p>
 
 For a production deployment, firewall access should be limited to the required protocol, interface, and network profile instead of being opened more broadly than necessary.
@@ -165,7 +165,7 @@ On the edge router, I created a NAT rule that forwarded PPTP's TCP control conne
 | Private port | `1723` |
 
 <p align="center">
-  <img src="https://i.imgur.com/WsSefj7.png" width="700" alt="Router rule forwarding TCP port 1723 to the RRAS server">
+  <img src="https://i.imgur.com/KrkkyiE.png" width="700" alt="Router rule forwarding TCP port 1723 to the RRAS server">
 </p>
 
 This rule addressed the PPTP control channel only. PPTP also requires the router and firewall path to pass **GRE IP protocol 47**, which is not a TCP or UDP port.
@@ -185,7 +185,7 @@ On the Windows client, I created a built-in VPN profile with the following setti
 The public IP address and user-identifying fields have been intentionally omitted from this README.
 
 <p align="center">
-  <img src="https://i.imgur.com/6Xevspw.png" width="700" alt="Windows VPN settings showing the AD-Connection profile">
+  <img src="https://i.imgur.com/Fz7W7IY.png" width="700" alt="Windows VPN settings showing the AD-Connection profile">
 </p>
 
 ### 9. Tested the Connection
@@ -193,7 +193,7 @@ The public IP address and user-identifying fields have been intentionally omitte
 I attempted to connect using `AD-Connection`. Windows reported that the network connection between the client and VPN server was interrupted.
 
 <p align="center">
-  <img src="https://i.imgur.com/IAYgdo3.png" width="700" alt="Windows VPN client showing an unsuccessful AD-Connection attempt">
+  <img src="https://i.imgur.com/RRz4qX1.png" width="700" alt="Windows VPN client showing an unsuccessful AD-Connection attempt">
 </p>
 
 An external TCP test also reported that port `1723` was not reachable. That result showed that the PPTP control channel was not externally accessible at the time of testing, but it did not identify the exact cause and could not validate GRE traffic.
