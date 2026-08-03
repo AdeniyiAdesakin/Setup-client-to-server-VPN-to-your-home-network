@@ -221,57 +221,6 @@ An external TCP test also reported that port `1723` was not reachable. That resu
 - Assignment of an internal VPN client address.
 - Access to DNS, file shares, Remote Desktop, or other internal resources.
 
-### Likely Investigation Areas
-
-| Area | Why it matters |
-| --- | --- |
-| TCP `1723` reachability | PPTP uses this connection for tunnel control |
-| GRE IP protocol `47` | PPTP carries tunneled data through GRE, which a TCP-only forwarding rule does not prove is working |
-| Router PPTP passthrough | Some NAT devices do not handle GRE mapping correctly without explicit PPTP support |
-| Double NAT or carrier-grade NAT | A second upstream NAT device can prevent unsolicited inbound traffic from reaching the home router |
-| NAT loopback | Testing the public address from the same internal network can fail when the router does not support hairpin NAT |
-| Server listening state | RRAS must be running and listening for PPTP control connections |
-| Windows and edge firewalls | Both the local server and upstream path must permit the required traffic |
-| External test location | The tunnel should be tested from a genuinely separate network, such as a mobile hotspot |
-
-The evidence does not prove that the ISP alone caused the failure. A complete diagnosis would need to verify each network layer and confirm whether GRE traffic reached the server.
-
-## Recommended Diagnostic Commands
-
-Run these checks on the RRAS server:
-
-```powershell
-# Confirm that Routing and Remote Access is running
-Get-Service -Name RemoteAccess
-
-# Check whether the server is listening for PPTP control traffic
-Get-NetTCPConnection -LocalPort 1723 -State Listen
-
-# Review firewall rules related to Remote Access
-Get-NetFirewallRule |
-    Where-Object DisplayName -Like "*Routing and Remote Access*" |
-    Select-Object DisplayName, Enabled, Direction, Action
-
-# Display IPv4 configuration and routing information
-Get-NetIPConfiguration
-route print
-```
-
-Run this from a client on a separate external network:
-
-```powershell
-# Tests only the TCP 1723 control channel, not GRE
-Test-NetConnection -ComputerName <vpn-endpoint> -Port 1723
-```
-
-Additional checks should include:
-
-- Compare the router's WAN address with the current public address.
-- Confirm whether the router supports PPTP passthrough and GRE forwarding.
-- Check for an ISP gateway or second router creating double NAT.
-- Review RRAS and RemoteAccess events in Event Viewer during a connection attempt.
-- Capture traffic on the server and check for TCP `1723` and GRE packets.
-- Test from a mobile hotspot or another external network.
 
 ## Validation Results
 
@@ -291,32 +240,9 @@ Additional checks should include:
 | VPN client received an internal address | Not validated |
 | Internal network resource access | Not validated |
 
-## Security and Design Considerations
 
-- PPTP was used only to study a legacy VPN configuration. Microsoft does not recommend PPTP because it lacks modern security features.
-- Use IKEv2 or SSTP for a current Windows remote-access deployment.
-- Use certificate-based authentication and stronger access controls where possible.
-- Manage user authorization with NPS policies and dedicated security groups instead of individual account settings at scale.
-- Do not publish public IP addresses, account names, passwords, router administration details, or unredacted configuration screenshots.
-- Place RRAS on a dedicated member server or appropriately segmented remote-access host rather than increasing the attack surface of a domain controller.
-- Restrict inbound firewall rules to the required protocols and interfaces.
-- Keep the VPN server, router, and clients patched and monitor authentication and RRAS logs.
-- Consider multifactor authentication for production remote access.
 
-## Recommended Next Implementation
 
-To complete this project as a modern remote-access deployment, I would:
-
-1. Deploy RRAS on a dedicated domain member server.
-2. Replace PPTP with IKEv2 or SSTP.
-3. Configure a server certificate and certificate-based authentication.
-4. Create an NPS policy tied to a dedicated VPN users security group.
-5. Configure the required edge-firewall rules for the selected protocol.
-6. Test from a separate external network.
-7. Validate the assigned VPN address with `ipconfig /all`.
-8. Confirm access to an approved internal resource.
-9. Record relevant RRAS, NPS, and firewall logs.
-10. Capture final evidence without exposing public addresses or credentials.
 
 ## Key Takeaways
 
