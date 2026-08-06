@@ -8,7 +8,7 @@ I configured Windows Server 2019 Routing and Remote Access Service (RRAS) to acc
 
 The client connection did not complete successfully. I documented the failed test and analyzed the likely network-path issues instead of presenting the deployment as a working production VPN.
 
-> **Project status:** Server-side and client-side configuration completed. End-to-end VPN connectivity remained unresolved and access to internal resources was not validated.
+
 
 ## Business Scenario
 
